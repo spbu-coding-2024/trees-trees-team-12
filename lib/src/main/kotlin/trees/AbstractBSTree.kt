@@ -24,6 +24,28 @@ public abstract class AbstractBSTree<K : Comparable<K>, V, NODE_T : Node<K, V, N
     abstract fun delete(key: K)
 
     override fun iterator(): Iterator<Pair<K, V>> {
-        TODO("Not yet implemented")
+        return object : Iterator<Pair<K, V>> {
+            var queue: ArrayDeque<Pair<K, V>> = ArrayDeque()
+            var isAddedToQueue: Boolean = false
+            override fun hasNext(): Boolean {
+                if (!isAddedToQueue) {
+                    inOrderTraversal(root)
+                    isAddedToQueue = true
+                }
+                return queue.isNotEmpty()
+            }
+
+            override fun next(): Pair<K, V> {
+                return queue.removeFirst()
+            }
+
+            fun inOrderTraversal(node: Node<K, V, NODE_T>?) {
+                if (node != null) {
+                    queue.add(Pair<K, V>(node.key, node.value))
+                    inOrderTraversal(node.left)
+                    inOrderTraversal(node.right)
+                }
+            }
+        }
     }
 }
