@@ -41,8 +41,8 @@ public abstract class AbstractBSTree<K : Comparable<K>, V, NODE_T : Node<K, V, N
 
             fun inOrderTraversal(node: Node<K, V, NODE_T>?) {
                 if (node != null) {
-                    queue.add(Pair<K, V>(node.key, node.value))
                     inOrderTraversal(node.left)
+                    queue.add(Pair<K, V>(node.key, node.value))
                     inOrderTraversal(node.right)
                 }
             }
