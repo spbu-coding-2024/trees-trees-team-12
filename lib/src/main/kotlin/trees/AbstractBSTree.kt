@@ -3,7 +3,7 @@ package trees
 import trees.nodes.Node
 
 public abstract class AbstractBSTree<K : Comparable<K>, V, NODE_T : Node<K, V, NODE_T>>(): Iterable<Pair<K, V>> {
-    protected var root: NODE_T? = null
+    internal var root: NODE_T? = null
 
     public fun find(key: K): V? {
         return findNode(key)?.value
