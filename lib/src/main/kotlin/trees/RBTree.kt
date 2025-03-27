@@ -43,6 +43,13 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         node?.parent = rightChild
     }
 
+    private fun isLeft(node: RBNode<K, V>?): Boolean {
+        if (node == root) {
+            return false
+        }
+        return node == node?.parent?.left
+    }
+
     override fun delete(key: K) {
         TODO("Not yet implemented")
     }
