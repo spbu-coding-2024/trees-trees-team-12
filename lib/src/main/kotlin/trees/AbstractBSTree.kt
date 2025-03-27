@@ -9,8 +9,8 @@ public abstract class AbstractBSTree<K : Comparable<K>, V, NODE_T : Node<K, V, N
         return findNode(key)?.value
     }
 
-    protected fun findNode(key: K) : Node<K, V, NODE_T>? {
-        var current: Node<K, V, NODE_T>? = root
+    protected fun findNode(key: K) : NODE_T? {
+        var current: NODE_T? = root
         while (current != null) {
             if (current.key == key) {
                 return current
