@@ -4,7 +4,27 @@ import trees.nodes.RBNode
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
-        TODO("Not yet implemented")
+        val newNode: RBNode<K, V> = RBNode(key, value)
+        newNode.color = RBNode.Color.RED
+        var current : RBNode<K, V>? = root
+        var currentParent: RBNode<K, V>? = null
+        while (current != null) {
+            currentParent = current
+            current = if (newNode.key < current.key) current.left else current.right
+        }
+
+        if  (currentParent == null) {
+            newNode .color = RBNode.Color.BLACK
+            root = newNode
+            return
+        }
+
+        newNode.parent = currentParent
+        if (newNode.key < currentParent.key) {
+            currentParent.left = newNode
+        } else {
+            currentParent.right = newNode
+        }
     }
 
     private fun getColor(node: RBNode<K, V>?): RBNode.Color {
