@@ -25,6 +25,51 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         } else {
             currentParent.right = newNode
         }
+
+        fixAfterInsert(newNode)
+    }
+
+    private fun fixAfterInsert(node: RBNode<K, V>?) {
+        if (node == root) {
+            node?.color = RBNode.Color.BLACK
+            return
+        }
+
+        val parent: RBNode<K, V>? = node?.parent
+        if (getColor(parent) == RBNode.Color.BLACK) {
+            return
+        }
+
+        val grandpa: RBNode<K, V>? = parent?.parent
+        val uncle: RBNode<K, V>? = if (parent == grandpa?.left) grandpa?.right else grandpa?.left
+
+        if (getColor(uncle) == RBNode.Color.RED) {
+            parent?.color = RBNode.Color.BLACK
+            uncle?.color = RBNode.Color.BLACK
+            grandpa?.color = RBNode.Color.RED
+            fixAfterInsert(grandpa)
+        } else {
+            if (isLeft(node) == isLeft(parent)) {
+                if (isLeft(node)) {
+                    rightRotate(grandpa)
+                } else {
+                    leftRotate(grandpa) // TODO FIX FIX  FIX
+                }
+                parent?.color = RBNode.Color.BLACK
+                uncle?.color = RBNode.Color.BLACK
+                grandpa?.color = RBNode.Color.RED
+            } else {
+                if (isLeft(node)) {
+                    rightRotate(parent)
+                    leftRotate(grandpa)
+                } else {
+                    leftRotate(parent)
+                    rightRotate(grandpa)
+                }
+                node?.color = RBNode.Color.BLACK
+                grandpa?.color = RBNode.Color.RED
+            }
+        }
     }
 
     private fun getColor(node: RBNode<K, V>?): RBNode.Color {
