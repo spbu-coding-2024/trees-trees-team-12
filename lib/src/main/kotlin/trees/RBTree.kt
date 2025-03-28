@@ -281,7 +281,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                         }
                     } else {
                         brother?.color = RBNode.Color.RED
-                        fixAfterDelete(parent?.parent, isLeft(parent))
+                        fixAfterDelete(parent?.parent ?: return, isLeft(parent))
                     }
                 }
             }
