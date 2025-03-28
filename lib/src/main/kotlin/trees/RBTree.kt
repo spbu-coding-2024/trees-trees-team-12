@@ -128,12 +128,12 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return acc
     }
 
-    private fun findMin(node: RBNode<K, V>?): RBNode<K, V>? {
-        var minNode: RBNode<K, V>? = node
-        while (minNode?.left != null) {
-            minNode = minNode.left
+    private fun findMax(node: RBNode<K, V>?): RBNode<K, V>? {
+        var maxNode: RBNode<K, V>? = node
+        while (maxNode?.right != null) {
+            maxNode = maxNode.right
         }
-        return minNode
+        return maxNode
     }
 
     private fun swapNodesValues(firstNode: RBNode<K, V>?, secondNode: RBNode<K, V>?) {
@@ -148,9 +148,9 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         var nodeForDelete: RBNode<K, V> = findNode(key) ?: return
 
         if (childCount(nodeForDelete) == 2) {
-            val rightMin: RBNode<K, V> = findMin(nodeForDelete.right) ?: throw IllegalArgumentException()
-            swapNodesValues(nodeForDelete, rightMin)
-            nodeForDelete = rightMin
+            val leftMax: RBNode<K, V> = findMax(nodeForDelete.left) ?: throw IllegalArgumentException()
+            swapNodesValues(nodeForDelete, leftMax)
+            nodeForDelete = leftMax
         }
 
         if (nodeForDelete == root) {
