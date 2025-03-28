@@ -1,6 +1,7 @@
 package trees
 
 import trees.nodes.RBNode
+import kotlin.math.min
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
@@ -53,7 +54,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                 if (isLeft(node)) {
                     rightRotate(grandpa)
                 } else {
-                    leftRotate(grandpa) // TODO FIX FIX  FIX
+                    leftRotate(grandpa)
                 }
                 parent?.color = RBNode.Color.BLACK
                 uncle?.color = RBNode.Color.BLACK
@@ -115,7 +116,176 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return node == node?.parent?.left
     }
 
+    private fun childCount(node: RBNode<K, V>?): Int {
+        var acc: Int = 0
+
+        if (node?.left != null) {
+            acc++
+        }
+        if (node?.right != null) {
+            acc++
+        }
+
+        return acc
+    }
+
+    private fun findMin(node: RBNode<K, V>?): RBNode<K, V>? {
+        var minNode: RBNode<K, V>? = node
+        while (minNode?.left != null) {
+            minNode = minNode.left
+        }
+        return minNode
+    }
+
+    private fun swapNodesValues(firstNode: RBNode<K, V>?, secondNode: RBNode<K, V>?) {
+        val tmp: Pair<K, V> = Pair<K, V>(firstNode?.key ?: throw IllegalArgumentException(), firstNode.value)
+        firstNode.key = secondNode?.key ?: throw IllegalArgumentException()
+        firstNode.value = secondNode.value ?: throw IllegalArgumentException()
+        secondNode.key = tmp.first
+        secondNode.value = tmp.second
+    }
+
     override fun delete(key: K) {
-        TODO("Not yet implemented")
+        var nodeForDelete: RBNode<K, V> = findNode(key) ?: return
+
+        if (childCount(nodeForDelete) == 2) {
+            val rightMin: RBNode<K, V> = findMin(nodeForDelete.right) ?: throw IllegalArgumentException()
+            swapNodesValues(nodeForDelete, rightMin)
+            nodeForDelete = rightMin
+        }
+
+        if (nodeForDelete == root) {
+            root = nodeForDelete.right ?: nodeForDelete.left
+        }
+
+        if (childCount(nodeForDelete) == 0) {
+            if (getColor(nodeForDelete) == RBNode.Color.RED) {
+                if (isLeft(nodeForDelete)) {
+                    nodeForDelete.parent?.left = null
+                    return
+                }
+                nodeForDelete.parent?.right = null
+                return
+            }
+            val parent: RBNode<K, V>? = nodeForDelete.parent
+            val isLeftDeleted: Boolean = isLeft(nodeForDelete)
+            if (isLeft(nodeForDelete)) {
+                parent?.left = null
+            } else {
+                parent?.right = null
+            }
+            fixAfterDelete(parent, isLeftDeleted)
+        } else {
+            val childNode: RBNode<K, V>? = nodeForDelete.left ?: nodeForDelete.right
+            childNode?.parent = nodeForDelete.parent
+            childNode?.color = RBNode.Color.BLACK
+            if (isLeft(nodeForDelete)) {
+                nodeForDelete.parent?.left = childNode
+                return
+            }
+            nodeForDelete.parent?.right = childNode
+        }
+    }
+
+    private fun fixAfterDelete(parent: RBNode<K, V>?, isLeftForFix: Boolean) {
+        var brother: RBNode<K, V>? = if (isLeftForFix) parent?.right else parent?.left
+        if (isLeftForFix) {
+            // todo: Symmetric case
+            if (getColor(parent) == RBNode.Color.RED) {
+                if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
+                    val redChild: RBNode<K, V>? = if (getColor(brother?.right) == RBNode.Color.RED) brother?.right else brother?.left
+                    if (!isLeft(redChild)) {
+                        leftRotate(parent)
+                        parent?.color = RBNode.Color.BLACK
+                        brother?.color = RBNode.Color.RED
+                        redChild?.color = RBNode.Color.BLACK
+                    } else {
+                        rightRotate(brother)
+                        leftRotate(parent)
+                        parent?.color = RBNode.Color.BLACK
+                    }
+                } else {
+                    parent?.color = RBNode.Color.BLACK
+                    brother?.color = RBNode.Color.RED
+                }
+            } else {
+                if (getColor(brother) == RBNode.Color.RED) {
+                    val grandson: RBNode<K, V>? = brother?.left
+                    val greatGrandson: RBNode<K, V>? = grandson?.right
+                    if (getColor(greatGrandson) == RBNode.Color.RED) {
+                        rightRotate(brother)
+                        leftRotate(parent)
+                        greatGrandson?.color = RBNode.Color.BLACK
+                    } else {
+                        leftRotate(parent)
+                        grandson?.color = RBNode.Color.RED
+                        brother?.color = RBNode.Color.BLACK
+                    }// todo done
+                } else {
+                    if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
+                        val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                        if (!isLeft(redChild)) {
+                            leftRotate(parent)
+                            redChild?.color = RBNode.Color.BLACK
+                        } else {
+                            rightRotate(brother) // todo
+                            leftRotate(parent)
+                            redChild?.color = RBNode.Color.BLACK
+                        }
+                    } else {
+                        brother?.color = RBNode.Color.RED
+                        fixAfterDelete(parent?.parent, isLeft(parent))
+                    }
+                }
+            }
+        } else {
+            if (getColor(parent) == RBNode.Color.RED) {
+                if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
+                    val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                    if (isLeft(redChild)) {
+                        rightRotate(parent)
+                        parent?.color = RBNode.Color.BLACK
+                        brother?.color = RBNode.Color.RED
+                        redChild?.color = RBNode.Color.BLACK
+                    } else {
+                        leftRotate(brother)
+                        rightRotate(parent)
+                        parent?.color = RBNode.Color.BLACK
+                    }
+                } else {
+                    parent?.color = RBNode.Color.BLACK
+                    brother?.color = RBNode.Color.RED
+                }
+            } else {
+                if (getColor(brother) == RBNode.Color.RED) {
+                    val grandson: RBNode<K, V>? = brother?.right
+                    val greatGrandson: RBNode<K, V>? = grandson?.left
+                    if (getColor(greatGrandson) == RBNode.Color.RED) {
+                        leftRotate(brother)
+                        rightRotate(parent)
+                        greatGrandson?.color = RBNode.Color.BLACK
+                    } else {
+                        rightRotate(parent)
+                        grandson?.color = RBNode.Color.RED
+                        brother?.color = RBNode.Color.BLACK
+                    }
+                } else {
+                    if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
+                        val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                        if (isLeft(redChild)) {
+                            rightRotate(parent)
+                            redChild?.color = RBNode.Color.BLACK
+                        } else {
+                            leftRotate(brother)
+                            rightRotate(parent)
+                            redChild?.color = RBNode.Color.BLACK
+                        }
+                    } else {
+                        brother?.color = RBNode.Color.RED
+                        fixAfterDelete(parent?.parent, isLeft(parent))
+                    }
+                }
+            }
+        }
     }
 }
