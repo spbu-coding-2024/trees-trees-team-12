@@ -1,7 +1,6 @@
 package trees
 
 import trees.nodes.RBNode
-import kotlin.math.min
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
