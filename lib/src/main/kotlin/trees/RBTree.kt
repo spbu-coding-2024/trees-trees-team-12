@@ -72,7 +72,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         }
     }
 
-    private fun getColor(node: RBNode<K, V>?): RBNode.Color {
+    internal fun getColor(node: RBNode<K, V>?): RBNode.Color {
         return node?.color ?: RBNode.Color.BLACK
     }
 
