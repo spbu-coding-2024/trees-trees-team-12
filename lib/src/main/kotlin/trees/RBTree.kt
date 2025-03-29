@@ -137,7 +137,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     }
 
     private fun swapNodesValues(firstNode: RBNode<K, V>?, secondNode: RBNode<K, V>?) {
-        val tmp: Pair<K, V> = Pair<K, V>(firstNode?.key ?: throw IllegalArgumentException(), firstNode.value)
+        val tmp: Pair<K, V> = Pair(firstNode?.key ?: throw IllegalArgumentException(), firstNode.value)
         firstNode.key = secondNode?.key ?: throw IllegalArgumentException()
         firstNode.value = secondNode.value ?: throw IllegalArgumentException()
         secondNode.key = tmp.first
@@ -189,7 +189,6 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     private fun fixAfterDelete(parent: RBNode<K, V>?, isLeftForFix: Boolean) {
         var brother: RBNode<K, V>? = if (isLeftForFix) parent?.right else parent?.left
         if (isLeftForFix) {
-            // todo: Symmetric case
             if (getColor(parent) == RBNode.Color.RED) {
                 if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
                     val redChild: RBNode<K, V>? = if (getColor(brother?.right) == RBNode.Color.RED) brother?.right else brother?.left
@@ -208,7 +207,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                     brother?.color = RBNode.Color.RED
                 }
             } else {
-                if (getColor(brother) == RBNode.Color.RED) { // todo: fix corner case
+                if (getColor(brother) == RBNode.Color.RED) {
                     leftRotate(parent)
                     parent?.color = RBNode.Color.RED
                     brother?.color = RBNode.Color.BLACK
@@ -220,7 +219,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                             leftRotate(parent)
                             redChild?.color = RBNode.Color.BLACK
                         } else {
-                            rightRotate(brother) // todo
+                            rightRotate(brother)
                             leftRotate(parent)
                             redChild?.color = RBNode.Color.BLACK
                         }
