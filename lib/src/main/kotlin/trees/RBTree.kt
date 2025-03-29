@@ -208,18 +208,11 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                     brother?.color = RBNode.Color.RED
                 }
             } else {
-                if (getColor(brother) == RBNode.Color.RED) {
-                    val grandson: RBNode<K, V>? = brother?.left
-                    val greatGrandson: RBNode<K, V>? = grandson?.right
-                    if (getColor(greatGrandson) == RBNode.Color.RED) {
-                        rightRotate(brother)
-                        leftRotate(parent)
-                        greatGrandson?.color = RBNode.Color.BLACK
-                    } else {
-                        leftRotate(parent)
-                        grandson?.color = RBNode.Color.RED
-                        brother?.color = RBNode.Color.BLACK
-                    }// todo done
+                if (getColor(brother) == RBNode.Color.RED) { // todo: fix corner case
+                    leftRotate(parent)
+                    parent?.color = RBNode.Color.RED
+                    brother?.color = RBNode.Color.BLACK
+                    fixAfterDelete(parent, isLeftForFix)
                 } else {
                     if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
                         val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
@@ -257,17 +250,10 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                 }
             } else {
                 if (getColor(brother) == RBNode.Color.RED) {
-                    val grandson: RBNode<K, V>? = brother?.right
-                    val greatGrandson: RBNode<K, V>? = grandson?.left
-                    if (getColor(greatGrandson) == RBNode.Color.RED) {
-                        leftRotate(brother)
-                        rightRotate(parent)
-                        greatGrandson?.color = RBNode.Color.BLACK
-                    } else {
-                        rightRotate(parent)
-                        grandson?.color = RBNode.Color.RED
-                        brother?.color = RBNode.Color.BLACK
-                    }
+                    rightRotate(parent)
+                    parent?.color = RBNode.Color.RED
+                    brother?.color = RBNode.Color.BLACK
+                    fixAfterDelete(parent, isLeftForFix)
                 } else {
                     if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
                         val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
