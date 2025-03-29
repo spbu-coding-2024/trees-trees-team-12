@@ -1,20 +1,20 @@
-name: Build test
+name: Library Test
 on:
   push:
   pull_request:
     branches: [main]
 jobs:
-  steps:
-    - name: Checkout
-    - uses: actions/checkout@v4
-    - name: SetUp Java
-    - uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-    - name: Testing with Gradle
-      run: ./gradlew test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Test with Gradle
+        run: ./gradlew test
