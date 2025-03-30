@@ -127,6 +127,4 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
             current = current.left!!
         return current
     }
-
-    
 }
