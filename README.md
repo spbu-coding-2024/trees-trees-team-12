@@ -38,6 +38,38 @@ cd trees-trees-team-12
 - После тестов отчет об их успешном прохожении можно посмотреть, открыв файл `lib/build/reports/tests/index.html`
 - После тестов отчет о тестовом покрытии jacoco можно посмотреть, открыв файл `lib/build/reports/jacoco/index.html`
 
+## Руководство по использованию
+- Создание дерева:
+```kotlin
+var bsTree: BSTree<KeyType, ValueType> = BSTree<KeyType, ValueType>()
+```
+```kotlin
+var avlTree: AVLTree<KeyType, ValueType> = AVLTree<KeyType, ValueType>()
+```
+```kotlin
+var rbTree: RBTree<KeyType, ValueType> = RBTree<KeyType, ValueType>()
+```
+Примеры операций:
+- Вставка:
+```kotlin
+tree.insert(key: KeyType, value: ValueType)
+```
+- Удаление:
+```kotlin
+tree.delete(key: KeyType)
+```
+- Поиск:
+```kotlin
+var value: ValueType = tree.find(key: KeyType)
+```
+- Итерация по парам ключ-значение в дереве:
+```kotlin
+for (pair in tree) {
+  println("Key: " + pair.first + "; Value: " + pair.second)
+}
+```
+
+
 ## Лицензия
 [MIT](https://choosealicense.com/licenses/mit/)
 
