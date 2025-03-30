@@ -1,5 +1,8 @@
 # Trees-team-12 Library
 
+![example workflow](https://github.com/spbu-coding-2024/trees-trees-team-12/actions/workflows/build.yml/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/spbu-coding-2024/trees-trees-team-12/badge)](https://www.codefactor.io/repository/github/spbu-coding-2024/trees-trees-team-12)
+
 ## Библиотека, реализующая три вида бинарных деревьев поиска на Kotlin:
 1. Стандартное бинарное дерево поиска (BST)
 2. AVL-дерево
