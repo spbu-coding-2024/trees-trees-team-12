@@ -100,6 +100,16 @@ class AVLTreeTest {
     }
 
     @Test
+    fun `delete non-existing key`() {
+        for (i in 1..10) {
+            tree.insert(i, i)
+        }
+        val initialSize = treeSize(tree)
+        tree.delete(100)
+        assertEquals(initialSize, treeSize(tree))
+    }
+
+    @Test
     fun `duplicate key update test`() {
         tree.insert(5, 50)
         assertEquals(50, tree.find(5))
