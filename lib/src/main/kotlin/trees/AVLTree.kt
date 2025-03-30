@@ -66,8 +66,6 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
                 }
             }
         }
-
-        if (node == null) return node
         
         // Update height
         node.height = 1 + maxOf(height(node.left), height(node.right))
