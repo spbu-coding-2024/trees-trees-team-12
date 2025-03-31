@@ -9,6 +9,7 @@ import trees.nodes.RBNode
 
 class RBTreeTest {
     private lateinit var tree: RBTree<Int, Int>
+
     @BeforeEach
     fun setUp() {
         tree = RBTree()
@@ -26,7 +27,7 @@ class RBTreeTest {
 
     @Test
     fun `insert ten increasing nums`() {
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             tree.insert(i, i)
             checkInvariant(tree.root)
             assertEquals(tree.find(i), i)
@@ -57,7 +58,7 @@ class RBTreeTest {
 
     @Test
     fun `insert 20 shuffled numbers with_delete`() {
-        var shuffled = (1 .. 20).shuffled()
+        var shuffled = (1..20).shuffled()
         var size = 0
         for (i in shuffled) {
             tree.insert(i, i)
@@ -88,7 +89,7 @@ class RBTreeTest {
 
     @Test
     fun `delete node that is not in the tree`() {
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             tree.insert(i, i)
         }
         checkInvariant(tree.root)
@@ -100,7 +101,7 @@ class RBTreeTest {
 
     @RepeatedTest(100)
     fun `big find test`() {
-        var shuffled = (1 .. 10000).shuffled().take(1000)
+        var shuffled = (1..10000).shuffled().take(1000)
         for (i in shuffled) {
             tree.insert(i, i)
             assertTrue(isBinarySearchTree(tree.root))
@@ -116,7 +117,7 @@ class RBTreeTest {
 
     @Test
     fun `small delete test`() {
-        for (i in 1 .. 100) {
+        for (i in 1..100) {
             tree.insert(i, i)
             assertEquals(tree.find(i), i)
             assertEquals(treeSize(tree), i)
@@ -135,7 +136,7 @@ class RBTreeTest {
 
     @RepeatedTest(10)
     fun `large property test`() {
-        var shuffled = (1 .. 100000).shuffled().take(10000)
+        var shuffled = (1..100000).shuffled().take(10000)
         for (i in shuffled) {
             tree.insert(i, i)
             assertEquals(tree.find(i), i)
@@ -172,7 +173,7 @@ class RBTreeTest {
         return if (node.color == RBNode.Color.BLACK) leftHeight + 1 else leftHeight
     }
 
-    private fun getNodeColor(node: RBNode<Int, Int>?): RBNode.Color{
+    private fun getNodeColor(node: RBNode<Int, Int>?): RBNode.Color {
         return node?.color ?: RBNode.Color.BLACK
     }
 
