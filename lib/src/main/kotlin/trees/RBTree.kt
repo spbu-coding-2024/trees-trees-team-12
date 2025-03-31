@@ -4,6 +4,12 @@ import trees.nodes.RBNode
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
+        val oldNode: RBNode<K, V>? = findNode(key)
+        if (oldNode != null) {
+            oldNode.value = value
+            return
+            }
+
         val newNode: RBNode<K, V> = RBNode(key, value)
         newNode.color = RBNode.Color.RED
         var current : RBNode<K, V>? = root
