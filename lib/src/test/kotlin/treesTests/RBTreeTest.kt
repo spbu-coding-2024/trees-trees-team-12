@@ -49,6 +49,13 @@ class RBTreeTest {
     }
 
     @Test
+    fun `replacing value in node when inserting existing key`() {
+        tree.insert(1, 1)
+        tree.insert(1, 2)
+        assertEquals(tree.root?.value, 2)
+    }
+
+    @Test
     fun `insert 20 shuffled numbers with_delete`() {
         var shuffled = (1 .. 20).shuffled()
         var size = 0
