@@ -26,7 +26,7 @@ class IteratorTest {
 
     @Test
     fun `iterator_test_1`() {
-        for (i in 1 .. 5) {
+        for (i in 1..5) {
             tree.insert(i, i)
         }
         var i: Int = 1
@@ -38,7 +38,7 @@ class IteratorTest {
 
     @Test
     fun `iterator_test_2`() {
-        for (i in 1 .. 100) {
+        for (i in 1..100) {
             tree.insert(i, i)
         }
         var i: Int = 1

@@ -4,17 +4,23 @@ import trees.nodes.RBNode
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
+        val oldNode: RBNode<K, V>? = findNode(key)
+        if (oldNode != null) {
+            oldNode.value = value
+            return
+        }
+
         val newNode: RBNode<K, V> = RBNode(key, value)
         newNode.color = RBNode.Color.RED
-        var current : RBNode<K, V>? = root
+        var current: RBNode<K, V>? = root
         var currentParent: RBNode<K, V>? = null
         while (current != null) {
             currentParent = current
             current = if (newNode.key < current.key) current.left else current.right
         }
 
-        if  (currentParent == null) {
-            newNode .color = RBNode.Color.BLACK
+        if (currentParent == null) {
+            newNode.color = RBNode.Color.BLACK
             root = newNode
             return
         }
@@ -72,12 +78,12 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         }
     }
 
-    internal fun getColor(node: RBNode<K, V>?): RBNode.Color {
+    private fun getColor(node: RBNode<K, V>?): RBNode.Color {
         return node?.color ?: RBNode.Color.BLACK
     }
 
     fun rightRotate(node: RBNode<K, V>?) {
-        val  leftChild: RBNode<K, V>? = node?.left
+        val leftChild: RBNode<K, V>? = node?.left
         node?.left = leftChild?.right
         node?.left?.parent = node
         leftChild?.right = node
@@ -191,7 +197,8 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         if (isLeftForFix) {
             if (getColor(parent) == RBNode.Color.RED) {
                 if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
-                    val redChild: RBNode<K, V>? = if (getColor(brother?.right) == RBNode.Color.RED) brother?.right else brother?.left
+                    val redChild: RBNode<K, V>? =
+                        if (getColor(brother?.right) == RBNode.Color.RED) brother?.right else brother?.left
                     if (!isLeft(redChild)) {
                         leftRotate(parent)
                         parent?.color = RBNode.Color.BLACK
@@ -214,7 +221,8 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                     fixAfterDelete(parent, isLeftForFix)
                 } else {
                     if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
-                        val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                        val redChild: RBNode<K, V>? =
+                            if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
                         if (!isLeft(redChild)) {
                             leftRotate(parent)
                             redChild?.color = RBNode.Color.BLACK
@@ -232,7 +240,8 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         } else {
             if (getColor(parent) == RBNode.Color.RED) {
                 if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
-                    val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                    val redChild: RBNode<K, V>? =
+                        if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
                     if (isLeft(redChild)) {
                         rightRotate(parent)
                         parent?.color = RBNode.Color.BLACK
@@ -255,7 +264,8 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
                     fixAfterDelete(parent, isLeftForFix)
                 } else {
                     if (getColor(brother?.left) == RBNode.Color.RED || getColor(brother?.right) == RBNode.Color.RED) {
-                        val redChild: RBNode<K, V>? = if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
+                        val redChild: RBNode<K, V>? =
+                            if (getColor(brother?.left) == RBNode.Color.RED) brother?.left else brother?.right
                         if (isLeft(redChild)) {
                             rightRotate(parent)
                             redChild?.color = RBNode.Color.BLACK
