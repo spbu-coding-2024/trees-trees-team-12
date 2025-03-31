@@ -189,8 +189,8 @@ class RBTreeTest {
     private fun isBinarySearchTree(node: RBNode<Int, Int>?): Boolean {
         if (node == null) return true
         return isBinarySearchTree(node.left) && isBinarySearchTree(node.right) &&
-                (node.key >= findMaxKey(node.left)) &&
-                (node.key <= findMinKey(node.right))
+                node.key >= findMaxKey(node.left) &&
+                node.key <= findMinKey(node.right)
     }
 
     private fun findMinKey(node: RBNode<Int, Int>?): Int {
