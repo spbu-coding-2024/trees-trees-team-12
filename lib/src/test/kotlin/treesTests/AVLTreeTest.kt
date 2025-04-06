@@ -71,6 +71,18 @@ class AVLTreeTest {
         }
     }
 
+    @Test
+    fun `insert negative and zero values`() {
+        tree.insert(0, 100)
+        tree.insert(-1, 200)
+        tree.insert(-5, 300)
+        assertEquals(100, tree.find(0))
+        assertEquals(200, tree.find(-1))
+        assertEquals(300, tree.find(-5))
+        assertEquals(3, treeSize(tree))
+        checkInvariant(tree.root)
+    }
+
     @RepeatedTest(100)
     fun `big find test with random keys`() {
         val keys = (1..10000).shuffled().take(1000)
@@ -107,6 +119,13 @@ class AVLTreeTest {
         val initialSize = treeSize(tree)
         tree.delete(100)
         assertEquals(initialSize, treeSize(tree))
+    }
+
+    @Test
+    fun `search and delete in empty tree`() {
+        assertNull(tree.find(1))
+        tree.delete(1)
+        assertEquals(0, treeSize(tree))
     }
 
     @Test
