@@ -141,10 +141,10 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return maxNode
     }
 
-    private fun swapNodesValues(firstNode: RBNode<K, V>?, secondNode: RBNode<K, V>?) {
-        val tmp: Pair<K, V> = Pair(firstNode?.key ?: throw IllegalArgumentException(), firstNode.value)
-        firstNode.key = secondNode?.key ?: throw IllegalArgumentException()
-        firstNode.value = secondNode.value ?: throw IllegalArgumentException()
+    private fun swapNodesValues(firstNode: RBNode<K, V>, secondNode: RBNode<K, V>) {
+        val tmp: Pair<K, V> = Pair(firstNode.key, firstNode.value)
+        firstNode.key = secondNode.key
+        firstNode.value = secondNode.value
         secondNode.key = tmp.first
         secondNode.value = tmp.second
     }
