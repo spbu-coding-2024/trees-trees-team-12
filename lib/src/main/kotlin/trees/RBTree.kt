@@ -11,12 +11,11 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         }
 
         val newNode: RBNode<K, V> = RBNode(key, value)
-        newNode.color = RBNode.Color.RED
         var current: RBNode<K, V>? = root
         var currentParent: RBNode<K, V>? = null
         while (current != null) {
             currentParent = current
-            current = if (newNode.key < current.key) current.left else current.right
+            current = if (newNode//        newNode.color = RBNode.Color.RED.key < current.key) current.left else current.right
         }
 
         if (currentParent == null) {
