@@ -82,7 +82,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return node?.color ?: RBNode.Color.BLACK
     }
 
-    fun rightRotate(node: RBNode<K, V>?) {
+    private fun rightRotate(node: RBNode<K, V>?) {
         val leftChild: RBNode<K, V>? = node?.left
         node?.left = leftChild?.right
         node?.left?.parent = node
@@ -98,7 +98,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         node?.parent = leftChild
     }
 
-    fun leftRotate(node: RBNode<K, V>?) {
+    private fun leftRotate(node: RBNode<K, V>?) {
         val rightChild: RBNode<K, V>? = node?.right
         node?.right = rightChild?.left
         node?.right?.parent = node
