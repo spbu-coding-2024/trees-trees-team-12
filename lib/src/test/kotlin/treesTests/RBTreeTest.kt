@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test
 import trees.RBTree
 import trees.nodes.RBNode
 
+const val testRepeat: Int = 100
+const val countForShuffle: Int = 100000
+const val countForInsert: Int = 1000
 class RBTreeTest {
     private lateinit var tree: RBTree<Int, Int>
 
@@ -95,9 +98,9 @@ class RBTreeTest {
         assertEquals(treeSize(tree), 10)
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(testRepeat)
     fun `big find test`() {
-        var shuffled = (1..10000).shuffled().take(1000)
+        var shuffled = (1..countForShuffle).shuffled().take(countForInsert)
         for (i in shuffled) {
             tree.insert(i, i)
             assertTrue(isBinarySearchTree(tree.root))
@@ -130,9 +133,9 @@ class RBTreeTest {
         }
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(testRepeat)
     fun `large property test`() {
-        var shuffled = (1..100000).shuffled().take(1000)
+        var shuffled = (1..countForShuffle).shuffled().take(countForInsert)
         for (i in shuffled) {
             tree.insert(i, i)
             assertEquals(tree.find(i), i)
@@ -140,7 +143,7 @@ class RBTreeTest {
             assertTrue(isBinarySearchTree(tree.root))
         }
 
-        assertEquals(treeSize(tree), 1000)
+        assertEquals(treeSize(tree), countForInsert)
 
 
         shuffled = shuffled.shuffled()
