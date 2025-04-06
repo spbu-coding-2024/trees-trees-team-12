@@ -19,8 +19,8 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
                 return node
             }
         }
-        // Update height
-        node.height = 1 + maxOf(height(node.left), height(node.right))
+        
+        node.height = updateHeight(node)
         val balance = getBalance(node)
         
         // Balance
@@ -67,8 +67,7 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
             }
         }
         
-        // Update height
-        node.height = 1 + maxOf(height(node.left), height(node.right))
+        node.height = updateHeight(node)
         val balance = getBalance(node)
         
         // Balance
@@ -97,8 +96,8 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
         leftChild.right = unbalancedRoot
         unbalancedRoot.left = rightOfLeft
         // Update heights
-        unbalancedRoot.height = maxOf(height(unbalancedRoot.left), height(unbalancedRoot.right)) + 1
-        leftChild.height = maxOf(height(leftChild.left), height(leftChild.right)) + 1
+        unbalancedRoot.height = updateHeight(unbalancedRoot)
+        leftChild.height = updateHeight(leftChild)
         return leftChild
     }
     
@@ -108,12 +107,16 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
         rightChild.left = unbalancedRoot
         unbalancedRoot.right = leftOfRight
         // Update heights
-        unbalancedRoot.height = maxOf(height(unbalancedRoot.left), height(unbalancedRoot.right)) + 1
-        rightChild.height = maxOf(height(rightChild.left), height(rightChild.right)) + 1
+        unbalancedRoot.height = updateHeight(unbalancedRoot)
+        rightChild.height = updateHeight(rightChild)
         return rightChild
     }
 
     private fun height(node: AVLNode<K, V>?): Int = node?.height ?: 0
+
+    private fun updateHeight(node: AVLNode<K, V>): Int {
+        return 1 + maxOf(height(node.left), height(node.right))
+    }
 
     private fun getBalance(node: AVLNode<K, V>?): Int {
         return if (node == null) 0 else height(node.left) - height(node.right)
