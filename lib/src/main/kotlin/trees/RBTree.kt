@@ -4,19 +4,19 @@ import trees.nodes.RBNode
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
-        val oldNode: RBNode<K, V>? = findNode(key)
-        if (oldNode != null) {
-            oldNode.value = value
-            return
-        }
-
         val newNode: RBNode<K, V> = RBNode(key, value)
-        newNode.color = RBNode.Color.RED
         var current: RBNode<K, V>? = root
         var currentParent: RBNode<K, V>? = null
         while (current != null) {
             currentParent = current
-            current = if (newNode.key < current.key) current.left else current.right
+            if (newNode.key < current.key) {
+                current = current.left
+            } else if (newNode.key > current.key) {
+                current = current.right
+            } else {
+                current.value = value
+                return
+            }
         }
 
         if (currentParent == null) {
@@ -82,7 +82,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return node?.color ?: RBNode.Color.BLACK
     }
 
-    fun rightRotate(node: RBNode<K, V>?) {
+    private fun rightRotate(node: RBNode<K, V>?) {
         val leftChild: RBNode<K, V>? = node?.left
         node?.left = leftChild?.right
         node?.left?.parent = node
@@ -98,7 +98,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         node?.parent = leftChild
     }
 
-    fun leftRotate(node: RBNode<K, V>?) {
+    private fun leftRotate(node: RBNode<K, V>?) {
         val rightChild: RBNode<K, V>? = node?.right
         node?.right = rightChild?.left
         node?.right?.parent = node
@@ -142,10 +142,10 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         return maxNode
     }
 
-    private fun swapNodesValues(firstNode: RBNode<K, V>?, secondNode: RBNode<K, V>?) {
-        val tmp: Pair<K, V> = Pair(firstNode?.key ?: throw IllegalArgumentException(), firstNode.value)
-        firstNode.key = secondNode?.key ?: throw IllegalArgumentException()
-        firstNode.value = secondNode.value ?: throw IllegalArgumentException()
+    private fun swapNodesValues(firstNode: RBNode<K, V>, secondNode: RBNode<K, V>) {
+        val tmp: Pair<K, V> = Pair(firstNode.key, firstNode.value)
+        firstNode.key = secondNode.key
+        firstNode.value = secondNode.value
         secondNode.key = tmp.first
         secondNode.value = tmp.second
     }
