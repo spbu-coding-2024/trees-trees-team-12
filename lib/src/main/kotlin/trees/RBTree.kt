@@ -4,18 +4,19 @@ import trees.nodes.RBNode
 
 class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
     override fun insert(key: K, value: V) {
-        val oldNode: RBNode<K, V>? = findNode(key)
-        if (oldNode != null) {
-            oldNode.value = value
-            return
-        }
-
         val newNode: RBNode<K, V> = RBNode(key, value)
         var current: RBNode<K, V>? = root
         var currentParent: RBNode<K, V>? = null
         while (current != null) {
             currentParent = current
-            current = if (newNode.key < current.key) current.left else current.right
+            if (newNode.key < current.key) {
+                current = current.left
+            } else if (newNode.key > current.key) {
+                current = current.right
+            } else {
+                current.value = value
+                return
+            }
         }
 
         if (currentParent == null) {
