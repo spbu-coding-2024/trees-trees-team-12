@@ -93,9 +93,9 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
 
     private fun rightRotate(unbalancedRoot: AVLNode<K, V>): AVLNode<K, V> {
         val leftChild = unbalancedRoot.left ?: throw IllegalArgumentException("Left child is null")
-        val rightSubtreeOfLeftChild = leftChild.right
+        val rightOfLeft = leftChild.right
         leftChild.right = unbalancedRoot
-        unbalancedRoot.left = rightSubtreeOfLeftChild
+        unbalancedRoot.left = rightOfLeft
         // Update heights
         unbalancedRoot.height = maxOf(height(unbalancedRoot.left), height(unbalancedRoot.right)) + 1
         leftChild.height = maxOf(height(leftChild.left), height(leftChild.right)) + 1
@@ -103,10 +103,10 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
     }
     
     private fun leftRotate(unbalancedRoot: AVLNode<K, V>): AVLNode<K, V> {
-        val rightChild = unbalancedRoot .right ?: throw IllegalArgumentException("Right child is null")
-        val leftSubtreeOfRightChild = rightChild.left
+        val rightChild = unbalancedRoot.right ?: throw IllegalArgumentException("Right child is null")
+        val leftOfRight = rightChild.left
         rightChild.left = unbalancedRoot
-        unbalancedRoot.right = leftSubtreeOfRightChild
+        unbalancedRoot.right = leftOfRight
         // Update heights
         unbalancedRoot.height = maxOf(height(unbalancedRoot.left), height(unbalancedRoot.right)) + 1
         rightChild.height = maxOf(height(rightChild.left), height(rightChild.right)) + 1
