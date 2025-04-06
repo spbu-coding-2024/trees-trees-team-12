@@ -24,20 +24,22 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
         val balance = getBalance(node)
         
         // Balance
+        val leftChild = node.left
+        val rightChild = node.right
         // Left-Left case
-        if (balance > 1 && key < (node.left?.key ?: throw IllegalArgumentException("Left child is null")))
+        if (balance > 1 && leftChild != null && key < leftChild.key)
             return rightRotate(node)
         // Right-Right case
-        if (balance < -1 && key > (node.right?.key ?: throw IllegalArgumentException("Right child is null")))
+        if (balance < -1  && rightChild != null && key > rightChild.key)
             return leftRotate(node)
         // Left-Right case
-        if (balance > 1 && key > (node.left?.key ?: throw IllegalArgumentException("Left child is null"))) {
-            node.left = leftRotate(node.left ?: throw IllegalArgumentException("Left child is null"))
+        if (balance > 1 && leftChild != null && key > leftChild.key) {
+            node.left = leftRotate(leftChild)
             return rightRotate(node)
         }
         // Right-Left case
-        if (balance < -1 && key < (node.right?.key ?: throw IllegalArgumentException("Right child is null"))) {
-            node.right = rightRotate(node.right ?: throw IllegalArgumentException("Right child is null"))
+        if (balance < -1 && rightChild != null && key < rightChild.key) {
+            node.right = rightRotate(rightChild)
             return leftRotate(node)
         }
         return node
@@ -59,7 +61,7 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
                     return temp  // One or no child case
                 } else {
                     // Node with two children
-                    val temp = minValueNode(node.right ?: throw IllegalArgumentException("Right child is null in delete operation"))
+                    val temp = minValueNode(node.right) ?: throw IllegalArgumentException()
                     node.key = temp.key
                     node.value = temp.value
                     node.right = delete(node.right, temp.key)
@@ -71,27 +73,29 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
         val balance = getBalance(node)
         
         // Balance
+        val leftChild = node.left
+        val rightChild = node.right
         // Left-Left Case
         if (balance > 1 && getBalance(node.left) >= 0)
             return rightRotate(node)
         // Left-Right Case
-        if (balance > 1 && getBalance(node.left) < 0) {
-            node.left = leftRotate(node.left ?: throw IllegalArgumentException("Left child is null"))
+        if (balance > 1 && leftChild != null && getBalance(node.left) < 0) {
+            node.left = leftRotate(leftChild)
             return rightRotate(node)
         }
         // Right-Right Case
         if (balance < -1 && getBalance(node.right) <= 0)
             return leftRotate(node)
         // Right-Left Case
-        if (balance < -1 && getBalance(node.right) > 0) {
-            node.right = rightRotate(node.right ?: throw IllegalArgumentException("Right child is null"))
+        if (balance < -1 && rightChild != null && getBalance(node.right) > 0) {
+            node.right = rightRotate(rightChild)
             return leftRotate(node)
         }
         return node
     }
 
     private fun rightRotate(unbalancedRoot: AVLNode<K, V>): AVLNode<K, V> {
-        val leftChild = unbalancedRoot.left ?: throw IllegalArgumentException("Left child is null")
+        val leftChild = unbalancedRoot.left ?: return unbalancedRoot
         val rightOfLeft = leftChild.right
         leftChild.right = unbalancedRoot
         unbalancedRoot.left = rightOfLeft
@@ -102,7 +106,7 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
     }
     
     private fun leftRotate(unbalancedRoot: AVLNode<K, V>): AVLNode<K, V> {
-        val rightChild = unbalancedRoot.right ?: throw IllegalArgumentException("Right child is null")
+        val rightChild = unbalancedRoot.right ?: return unbalancedRoot
         val leftOfRight = rightChild.left
         rightChild.left = unbalancedRoot
         unbalancedRoot.right = leftOfRight
@@ -122,10 +126,11 @@ public class AVLTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, AVLNode<K, V
         return if (node == null) 0 else height(node.left) - height(node.right)
     }
 
-    private fun minValueNode(node: AVLNode<K, V>): AVLNode<K, V> {
+    private fun minValueNode(node: AVLNode<K, V>?): AVLNode<K, V>? {
         var current = node
-        while (current.left != null)
-            current = current.left ?: throw IllegalStateException("Min node is null")
+        while (current?.left != null) {
+            current = current.left
+        }
         return current
     }
 }
