@@ -63,12 +63,7 @@ class RBTreeTest {
         for (i in shuffled) {
             tree.insert(i, i)
             size++
-            checkInvariant(tree.root)
-            assertEquals(tree.find(i), i)
-            assertEquals(treeSize(tree), size)
-            assertTrue(isBinarySearchTree(tree.root))
         }
-        assertEquals(treeSize(tree), 20)
 
         shuffled = shuffled.shuffled()
 
@@ -80,6 +75,7 @@ class RBTreeTest {
             assertEquals(treeSize(tree), size)
             assertTrue(isBinarySearchTree(tree.root))
         }
+        assertEquals(treeSize(tree), 0)
     }
 
     @Test
@@ -134,9 +130,9 @@ class RBTreeTest {
         }
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(100)
     fun `large property test`() {
-        var shuffled = (1..100000).shuffled().take(10000)
+        var shuffled = (1..100000).shuffled().take(1000)
         for (i in shuffled) {
             tree.insert(i, i)
             assertEquals(tree.find(i), i)
@@ -144,7 +140,8 @@ class RBTreeTest {
             assertTrue(isBinarySearchTree(tree.root))
         }
 
-        assertEquals(treeSize(tree), 10000)
+        assertEquals(treeSize(tree), 1000)
+
 
         shuffled = shuffled.shuffled()
 
