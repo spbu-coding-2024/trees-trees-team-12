@@ -15,7 +15,7 @@ class RBTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, RBNode<K, V>>() {
         var currentParent: RBNode<K, V>? = null
         while (current != null) {
             currentParent = current
-            current = if (newNode//        newNode.color = RBNode.Color.RED.key < current.key) current.left else current.right
+            current = if (newNode.key < current.key) current.left else current.right
         }
 
         if (currentParent == null) {
