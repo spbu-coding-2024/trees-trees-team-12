@@ -2,59 +2,45 @@ package trees
 
 import trees.nodes.BSNode
 
-public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>()
-{
-    override fun insert(key: K, value: V)
-    {
+public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>() {
+    override fun insert(key: K, value: V) {
         root = insertRecursive(key, value, root)
     }
 
-    private fun insertRecursive(key: K, value: V, node: BSNode<K,V>?) : BSNode<K, V>
-    {
-        if(node == null)
-        {
+    private fun insertRecursive(key: K, value: V, node: BSNode<K, V>?): BSNode<K, V> {
+        if (node == null) {
            return BSNode(key, value)
         }
 
-        if (key < node.key)
-        {
+        if (key < node.key) {
             node.left = insertRecursive(key, value, node.left)
-        }
-        else if (key > node.key)
-        {
+        } else if (key > node.key) {
             node.right = insertRecursive(key, value, node.right)
-        }
-        else
-        {
+        } else {
             node.value = value
         }
        return node
     }
 
-    override fun delete(key: K)
-    {
+    override fun delete(key: K) {
         root = deleteRecursive(root, key)
     }
 
-   private fun deleteRecursive(node: BSNode<K,V>?, key: K): BSNode<K,V>?
-   {
-        if (node == null)
-        {
+    private fun deleteRecursive(node: BSNode<K, V>?, key: K): BSNode<K, V>? {
+
+        if (node == null) {
             return null
         }
 
-        if (key == node.key)
-        {
-            if (node.left == null && node.right == null)
-            {
+        if (key == node.key) {
+
+            if (node.left == null && node.right == null) {
                 return null
             }
-            if (node.left == null)
-            {
+            if (node.left == null) {
                 return node.right
             }
-            if (node.right == null)
-            {
+            if (node.right == null) {
                 return node.left
             }
 
@@ -65,26 +51,21 @@ public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>
             return node
         }
 
-        if (key < node.key)
-        {
+        if (key < node.key) {
             node.left = deleteRecursive(node.left, key)
-        }
-        else
-        {
+        } else {
             node.right = deleteRecursive(node.right, key)
         }
 
         return node
     }
 
-    private  fun getSmallestValue(root: BSNode<K,V>): BSNode<K,V>
-    {
+    private fun getSmallestValue(root: BSNode<K, V>): BSNode<K, V> {
+
         val leftNode = root.left
-        if (leftNode == null)
-        {
+        if (leftNode == null) {
             return root
         }
-
 
         return getSmallestValue(leftNode)
     }
