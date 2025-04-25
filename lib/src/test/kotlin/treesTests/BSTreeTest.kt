@@ -33,15 +33,6 @@ class BSTreeTest
     }
 
     @Test
-    fun `insert 111 nodes`() {
-        for (i in 1..111) {
-            tree.insert(i, i)
-            assertEquals(tree.find(i), i)
-            assertEquals(tree.find(i - 1), null)
-        }
-    }
-
-    @Test
     fun `delete from empty tree`() {
         tree.delete(1)
     }
@@ -51,6 +42,109 @@ class BSTreeTest
         tree.insert(1, 1)
         tree.delete(2)
     }
+
+    @Test
+    fun `delete root node`() {
+        tree.insert(2, 2)
+        tree.insert(1, 1)
+        tree.insert(3, 3)
+        tree.delete(2)
+        assertEquals(null, tree.find(2))
+        assertEquals(1, tree.find(1))
+        assertEquals(3, tree.find(3))
+    }
+
+    @Test
+    fun `delete node with one child`() {
+        tree.insert(3, 3)
+        tree.insert(2, 2)
+        tree.insert(1, 1)
+        tree.delete(2)
+        assertEquals(null, tree.find(2))
+        assertEquals(1, tree.find(1))
+        assertEquals(3, tree.find(3))
+    }
+
+    @Test
+    fun `delete node with two children`() {
+        tree.insert(2, 2)
+        tree.insert(1, 1)
+        tree.insert(4, 4)
+        tree.insert(3, 3)
+        tree.insert(5, 5)
+        tree.delete(4)
+        assertEquals(null, tree.find(4))
+        assertEquals(3, tree.find(3))
+        assertEquals(5, tree.find(5))
+    }
+
+    @Test
+    fun `delete leaf node`() {
+        tree.insert(2, 2)
+        tree.insert(1, 1)
+        tree.insert(3, 3)
+        tree.delete(1)
+        assertEquals(null, tree.find(1))
+        assertEquals(2, tree.find(2))
+        assertEquals(3, tree.find(3))
+    }
+
+    @Test
+    fun `delete all nodes one by one`() {
+        tree.insert(3, 3)
+        tree.insert(1, 1)
+        tree.insert(2, 2)
+        tree.insert(4, 4)
+
+        tree.delete(1)
+        assertEquals(null, tree.find(1))
+
+        tree.delete(2)
+        assertEquals(null, tree.find(2))
+
+        tree.delete(3)
+        assertEquals(null, tree.find(3))
+
+        tree.delete(4)
+        assertEquals(null, tree.find(4))
+
+        assertEquals(null, tree.root)
+    }
+
+    @Test
+    fun `find in empty tree`() {
+        assertEquals(null, tree.find(1))
+    }
+
+    @Test
+    fun `change value by existing key`() {
+        tree.insert(1, 11)
+        tree.insert(1, 111)
+
+        assertEquals(111, tree.find(1))
+    }
+
+    @Test
+    fun `insert 10_000 nodes`() {
+        for (p in 1..10_000) {
+            tree.insert(p, p)
+            assertEquals(p, tree.find(p))
+        }
+    }
+
+    @Test
+    fun `delete 1_000 nodes`() {
+        for (p in 1..1_000) {
+            tree.insert(p, p)
+        }
+        for (q in 1_000 downTo 1) {
+            tree.delete(q)
+            assertEquals(null, tree.find(q))
+        }
+    }
 }
+
+
+
 
 
