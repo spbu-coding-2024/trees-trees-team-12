@@ -69,5 +69,5 @@ public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>
 
         return getSmallestValue(leftNode)
     }
-
 }
+
