@@ -5,8 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import trees.BSTree
 
-class BSTreeTest
-{
+class BSTreeTest {
     private lateinit var tree: BSTree<Int, Int>
 
     @BeforeEach
@@ -35,12 +34,17 @@ class BSTreeTest
     @Test
     fun `delete from empty tree`() {
         tree.delete(1)
+
+        assertEquals(null, tree.root)
     }
 
     @Test
     fun `delete non-existent node `() {
         tree.insert(1, 1)
         tree.delete(2)
+
+        assertEquals(null, tree.find(2))
+        assertEquals(1, tree.find(1))
     }
 
     @Test
@@ -143,6 +147,7 @@ class BSTreeTest
         }
     }
 }
+
 
 
 
