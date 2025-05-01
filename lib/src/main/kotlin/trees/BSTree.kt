@@ -27,13 +27,11 @@ public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>
     }
 
     private fun deleteRecursive(node: BSNode<K, V>?, key: K): BSNode<K, V>? {
-
         if (node == null) {
             return null
         }
 
         if (key == node.key) {
-
             if (node.left == null && node.right == null) {
                 return null
             }
@@ -56,17 +54,14 @@ public class BSTree<K : Comparable<K>, V>() : AbstractBSTree<K, V, BSNode<K, V>>
         } else {
             node.right = deleteRecursive(node.right, key)
         }
-
         return node
     }
 
     private fun getSmallestValue(root: BSNode<K, V>): BSNode<K, V> {
-
         val leftNode = root.left
         if (leftNode == null) {
             return root
         }
-
         return getSmallestValue(leftNode)
     }
 }

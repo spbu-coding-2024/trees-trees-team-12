@@ -146,7 +146,32 @@ class BSTreeTest {
             assertEquals(null, tree.find(q))
         }
     }
+
+    @Test
+    fun `insert keys in mixed order`() {
+        val keys = listOf(5, 2, 8, 1, 3, 7, 9, 4, 6, 0)
+
+        keys.forEach { key -> tree.insert(key, key * 10) }
+
+        keys.forEach { key ->
+            assertEquals(key * 10, tree.find(key))
+        }
+
+        assertEquals(null, tree.find(-1))
+        assertEquals(null, tree.find(10))
+    }
+
+    @Test
+    fun `insert keys in random order`() {
+        for (i in 1..1111) {
+            val key = (1..11111).random()
+            tree.insert(key, key)
+
+            assertEquals(key, tree.find(key))
+        }
+    }
 }
+
 
 
 
